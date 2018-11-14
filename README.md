@@ -5,14 +5,14 @@ Source code of musical robot project. Lead by Professor Steven Kemper at Rutgers
 
 
 # Dependencies
-Requires python 2.7 (will most likely crash on python 3, untested)
-Melodia melody extraction Vamp plugin: http://mtg.upf.edu/technologies/melodia
-Librosa: https://github.com/librosa/librosa
-Vamp python module: https://pypi.python.org/pypi/vamp
-midiutil: https://code.google.com/p/midiutil/
-NumPy & SciPy: http://www.scipy.org/
-JAMS: https://github.com/marl/jams
+Requires python 2.7 (will most likely crash on python 3, untested)<br />
+Melodia melody extraction Vamp plugin: http://mtg.upf.edu/technologies/melodia<br />
+Librosa: https://github.com/librosa/librosa<br />
+Vamp python module: https://pypi.python.org/pypi/vamp<br />
+midiutil: https://code.google.com/p/midiutil/<br />
+NumPy & SciPy: http://www.scipy.org/<br />
+JAMS: https://github.com/marl/jams<br />
 
 # Reference
-Convert single audio file to MIDI file
+Convert single audio file to MIDI file<br />
 https://github.com/justinsalamon/audio_to_midi_melodia

@@ -12,8 +12,8 @@ def audio_to_midi(mode, outfile, bpm, smooth=0.25, minduration=0.1, savejams=Fal
 		atmm.audio_to_midi_melodia(infile, outfile, bpm,
                           smooth=smooth, minduration=minduration,
                           savejams=savejams)
-	elif mode == 1:
-		infile = raw_input("Please provide your audio file address: ")
+	elif mode == 1: # audio file
+		infile = raw_input("Please provide your audio file path: ")
 		atmm.audio_to_midi_melodia(infile, outfile, bpm,
                           smooth=smooth, minduration=minduration,
                           savejams=savejams)

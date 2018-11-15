@@ -13,6 +13,3 @@ midiutil: https://code.google.com/p/midiutil/<br />
 NumPy & SciPy: http://www.scipy.org/<br />
 JAMS: https://github.com/marl/jams<br />
 
-# Reference
-Convert single audio file to MIDI file<br />
-https://github.com/justinsalamon/audio_to_midi_melodia

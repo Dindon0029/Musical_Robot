@@ -5,11 +5,13 @@ from stream_to_audio import stream_to_audio
 import argparse
 import pyaudio
 import os
+import subprocess
 
 def audio_to_midi(mode, outfile, bpm, smooth=0.25, minduration=0.1, savejams=False):
+	outfile = os.path.dirname(os.path.abspath(__file__))+'/primer/primer.mid'
 	if mode == 0: # audio stream
 		stream_to_audio()
-		infile = "./output.wav"
+		infile = "./strem_input.wav"
 		atmm.audio_to_midi_melodia(infile, outfile, bpm,
                           smooth=smooth, minduration=minduration,
                           savejams=savejams)
@@ -39,20 +41,7 @@ if __name__ == "__main__":
 	audio_to_midi(args.mode, args.outfile, args.bpm, smooth=args.smooth, minduration=args.minduration, savejams=args.jams)
 
 	# use the pretrained model to generate a melody
-	BUNDLE_PATH = os.path.dirname(os.path.abspath(__file__))+ '/model/basic_rnn.mag'
-	CONFIG='basic_rnn'
+	subprocess.call(['./generate.sh'])
 
-	# write BUNDLE_PATH and CONFIG into a file as a record, in order to use in the future
-	
-	# make a system call to generate a melody as a response
-	os.system('melody_rnn_generate \
-		--config=basic_rnn \
-		--bundle_file=${current_path} \
-		--output_dir=/Users/stevenyu0029/Desktop/audio_to_midi_melodia/output \
-		--num_outputs=10 \
-		--num_steps=128 \
-		--primer_melody="[60]"')
-
-	# train the model
 
 

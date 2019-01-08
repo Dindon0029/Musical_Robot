@@ -1,7 +1,7 @@
 # Musical_Robot
 Source code of musical robot project. Lead by Professor Steven Kemper at Rutgers University.
 
-# Convert audio source to pieces of MIDI file
+## Convert audio source to pieces of MIDI file
 Usage: 
 ```bash
 >python audio_to_midi.py [-h] mode [--smooth SMOOTH] [--minduration MINDURATION] [--jams] outfile bpm<br />
@@ -12,9 +12,9 @@ For example:
 >python audio_to_midi.py 1 --smooth 0.25 --minduration 0.1 --jams ~/song.mid 60<br />
 ```
 
-# Use pretrained neural network model based on Magenta project
+## Use pretrained neural network model based on Magenta project
 
-# Train your own model
+## Train your own model
 
 # Dependencies
 - Requires python 2.7 (will most likely crash on python 3, untested)<br />

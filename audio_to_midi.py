@@ -11,7 +11,7 @@ def audio_to_midi(mode, outfile, bpm, smooth=0.25, minduration=0.1, savejams=Fal
 	outfile = os.path.dirname(os.path.abspath(__file__))+'/primer/primer.mid'
 	if mode == 0: # audio stream
 		stream_to_audio()
-		infile = "./strem_input.wav"
+		infile = "./stream_input.wav"
 		atmm.audio_to_midi_melodia(infile, outfile, bpm,
                           smooth=smooth, minduration=minduration,
                           savejams=savejams)

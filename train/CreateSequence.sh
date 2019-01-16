@@ -30,14 +30,14 @@ convert_dir_to_note_sequences \
 #-----------------------------------------------------------------------#
 
 # Absolute path of output sequence examples
-EXAMPLE_FILE='/train_data/sequence_examples'
+EXAMPLE_FILE='/sequence_examples'
 EXAMPLE_DIRECTORY="$BASEDIR$EXAMPLE_FILE"
 
 # Generate examples
 melody_rnn_create_dataset \
 --config="$CONFIG" \
 --input=$SEQUENCES_TFRECORD \
---output_dir=EXAMPLE_DIRECTORY \
+--output_dir=$EXAMPLE_DIRECTORY \
 --eval_ratio=0.10
 
 #-----------------------------------------------------------------------#

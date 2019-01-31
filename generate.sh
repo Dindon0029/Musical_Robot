@@ -9,7 +9,7 @@ chmod a+x generate.sh
 BASEDIR=$(dirname "$0")
 
 # Concatenate with the model buddle's path
-BUNDLEDIR='/model/basic_rnn.mag'
+BUNDLEDIR='/model/run1_rnn.mag'
 BUNDLE_PATH="$BASEDIR$BUNDLEDIR"
 
 # Concatenate with the output folder's path

@@ -44,15 +44,29 @@ melody_rnn_create_dataset \
 # Absolute path of running directory
 RUN='/checkpoints'
 RUN_DIR="$BASEDIR$RUN"
+SEQUENCE_TF_FILE='/training_melodies.tfrecord'
+SEQUENCE_TF_PATH="$EXAMPLE_DIRECTORY$SEQUENCE_TF_FILE"
 
-# Train and evaluate
+# Train
 melody_rnn_train \
 --config="$CONFIG" \
 --run_dir=$RUN_DIR \
---sequence_example_file=$EXAMPLE_DIRECTORY \
---hparams="batch_size=64,rnn_layer_sizes=[64,64]" \
---num_training_steps=20000 \
+--sequence_example_file=$SEQUENCE_TF_PATH \
+--num_training_steps=2000 \
+
+# Absolute path of running directory
+EVAL_TF_FILE='/eval_melodies.tfrecord'
+EVAL_TF_PATH="$EXAMPLE_DIRECTORY$EVAL_TF_FILE"
+
+# Evaluate
+melody_rnn_train \
+--config="$CONFIG" \
+--run_dir=$RUN_DIR \
+--sequence_example_file=$EVAL_TF_PATH \
+--num_training_steps=2000 \
 --eval
+
+#--hparams="batch_size=8,rnn_layer_sizes=[8,8]" \ --num_training_steps=20000#
 
 #-----------------------------------------------------------------------#
 # Absolute path of model directory
@@ -63,7 +77,7 @@ BUNDLE_FILE="$PARENTDIR$MODEL"
 melody_rnn_generate \
 --config="$CONFIG" \
 --run_dir=$RUN_DIR \
---hparams="batch_size=64,rnn_layer_sizes=[64,64]" \
+# --hparams="batch_size=8,rnn_layer_sizes=[8,8]" \
 --bundle_file=$BUNDLE_FILE \
 --save_generator_bundle
 

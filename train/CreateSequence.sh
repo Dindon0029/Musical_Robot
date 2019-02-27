@@ -70,7 +70,7 @@ melody_rnn_train \
 
 #-----------------------------------------------------------------------#
 # Absolute path of model directory
-MODEL='/model/run1.mag'
+MODEL='/model/run1_rnn.mag'
 BUNDLE_FILE="$PARENTDIR$MODEL"
 
 # Create a bundle file
@@ -80,6 +80,18 @@ melody_rnn_generate \
 # --hparams="batch_size=8,rnn_layer_sizes=[8,8]" \
 --bundle_file=$BUNDLE_FILE \
 --save_generator_bundle
+
+# #-------------------
+# # Absolute path of model directory
+# MODEL='/model/run1.mag'
+# BUNDLE_FILE="$PARENTDIR$MODEL"
+
+# # Create a bundle file
+# melody_rnn_generate \
+# --config="basic_rnn" \
+# --run_dir=/Users/stevenyu0029/Desktop/Musical_Robot/train/checkpoints \
+# --bundle_file=/Users/stevenyu0029/Desktop/Musical_Robot/model/run1.mag \
+# --save_generator_bundle
 
 
 

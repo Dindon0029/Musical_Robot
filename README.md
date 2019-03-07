@@ -1,11 +1,15 @@
 # Musical_Robot
 Source code of musical robot project. Lead by Professor Steven Kemper at Rutgers University.
 
-## Generate your own melody with pre-trained model
-Usage:
-Running the following code under /Musical_Robot folder,
+## Convert audio source to pieces of MIDI file
+Usage: 
 ```bash
->python gui.py
+>python audio_to_midi.py [-h] mode [--smooth SMOOTH] [--minduration MINDURATION] [--jams] outfile bpm<br />
+```
+mode 0 is to use input stream; mode 1 is to use audio file<br />
+For example:
+```bash
+>python audio_to_midi.py 1 --smooth 0.25 --minduration 0.1 --jams ~/song.mid 60<br />
 ```
 
 ## Use pretrained neural network model based on Magenta project

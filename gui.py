@@ -2,7 +2,7 @@ from tkinter import Tk, Label, Button, Entry, IntVar, DoubleVar, StringVar, END,
 from tkinter.filedialog import askopenfilename
 # from sqlalchemy.sql.expression import column
 import tkMessageBox
-from tkMessageBox import showerror
+from tkMessageBox import showerror, showinfo
 
 import stream_to_audio as sta
 import audio_to_midi_melodia as atmm
@@ -34,7 +34,7 @@ class GUI:
         self.config_text = Label(master, text="How would you like your melody?", font='Helvetica 16 bold')
         self.checkmark1 = Label(master, text=u'\u2713', fg='green')
         self.checkmark2 = Label(master, text=u'\u2713', fg='green')
-        # self.saving_text = Label(master, text="Saving path: ")
+        ## self.saving_text = Label(master, text="Saving path: ")
         self.bpm_text = Label(master, text="Tempo of the track in BPM(beats per min): ")
         self.smooth_text = Label(master, text="Smoothness of pitch sequence: ")
         self.mindura_text = Label(master, text="Minimum duration of each note: ")
@@ -51,7 +51,7 @@ class GUI:
         # entry and combobox definitions
         vcmd = master.register(self.validate) # we have to wrap the command
         self.recording_seconds_entry = Entry(master, validate="key", validatecommand=(vcmd, '%P'))    # entry for recording seconds
-        self.bpm_combo = ttk.Combobox(master, textvariable=self.bpm,      # bpm combo box
+        self.bpm_combo = ttk.Combobox(master, textvariable=self.bpm, state="readonly",     # bpm combo box
                             values=(
                                     "50(very slow)", 
                                     "63(less slow)",
@@ -62,11 +62,11 @@ class GUI:
                                     "184(faster)",
                                     "210(even faster)"))
         self.bpm_combo.current(1)
-        self.smooth_combo = ttk.Combobox(master, textvariable=self.smooth,    # smoothness combo box
+        self.smooth_combo = ttk.Combobox(master, textvariable=self.smooth, state="readonly",   # smoothness combo box
                             values=[
                                     "0.25(default)"])
         self.smooth_combo.current(0)
-        self.mindura_combo = ttk.Combobox(master, textvariable=self.mindura,    # minduration combo box
+        self.mindura_combo = ttk.Combobox(master, textvariable=self.mindura, state="readonly",   # minduration combo box
                             values=[
                                     "0.1(default)",
                                     "0.2",
@@ -126,9 +126,7 @@ class GUI:
     def record(self, seconds):
         if self.infile != "":
             answer = messagebox.askyesno("Warning!","You already have a input file. Would you like to change it?")
-            if not answer:
-                return
-            elif answer == False:
+            if answer == False:
                 return
         if seconds > 5 or seconds < 1:    # invalid input
             showerror("Error", "Please type the recording time (1.0s ~ 5.0s) in blank")
@@ -137,7 +135,7 @@ class GUI:
             sta.stream_to_audio(seconds) # record voice in .wav format
             self.infile = "./stream_input.wav" # set up input music file path
             self.seconds = 0
-            self.checkmark.grid(row = 3, column = 2)
+            self.checkmark1.grid(row = 3, column = 2)
             return
 
     def browse(self, sort):
@@ -196,7 +194,9 @@ class GUI:
             generate_script_path = os.path.dirname(os.path.abspath(__file__))+'/generate.sh'
             subprocess.call(['chmod', 'a+x', generate_script_path])           # set write and read permission
             subprocess.call(['./generate.sh', self.model])              # call bash script
-            self.playable = True                                    # flag to show the play function can be called
+            self.playable = True  
+            folder = os.path.dirname(os.path.abspath(__file__))+'/output'   # default folder to store all generated MIDI files
+            showinfo("Info", "Your melodies have been successfully generated and saved in '%s'." % folder)
         except:
             showerror("Error", "Failed to execute generate.sh")
         return
@@ -218,16 +218,20 @@ class GUI:
         return
 
     def quit(self):
+        global root
+        if self.playable == False:  # user didn't generate melodies before
+            root.destroy()  # exit the program directly
+            return
+        
         folder = os.path.dirname(os.path.abspath(__file__))+'/output'   # default folder to store all generated MIDI files
         
-        answer = messagebox.askyesno("Quit?","Do you want to save your melodies?")
-        if not answer:  # user clicks "cancel"
-            return
-        elif answer == True:    # user clicks "yes"
+        answer = messagebox.askyesno("Quit?","Do you want to save your melodies?")  # check whether user wants to save the files
+        
+        if answer == True:    # user clicks "yes"
             messagebox.showinfo("Info", "Your generated MIDI files have been saved in '%s'." % folder)
-            global root
             root.destroy()  # exit the program
-        elif answer == False:    # user clicks "no"   
+            return
+        else:    # user clicks "no"   
             # delete all files and sub-folders under the directory
             for the_file in os.listdir(folder):
                 file_path = os.path.join(folder, the_file)
@@ -239,13 +243,13 @@ class GUI:
                 except Exception as e:
                     print(e)
             # exit the program
-            global root
-            root.destroy()  # exit the program
+            root.destroy()
+            return
 
 
 
 root = Tk()
-root.protocol("WM_DELETE_WINDOW", quit)     # handle closing event
-# root.geometry("600 * 800 + 20 + 20")
+root.geometry("+100+100")
 my_gui = GUI(root)
+root.protocol("WM_DELETE_WINDOW", my_gui.quit)     # handle closing event
 root.mainloop()

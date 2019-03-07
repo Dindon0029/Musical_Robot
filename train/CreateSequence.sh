@@ -10,7 +10,7 @@ chmod a+x CreateSequence.sh
 CONFIG=basic_rnn
 
 # Absolute path this script is in
-BASEDIR=$(dirname "$0")
+BASEDIR=$(pwd)
 PARENTDIR=$(dirname "$BASEDIR")
 
 # Absolute path of input midi file
@@ -70,7 +70,7 @@ melody_rnn_train \
 
 #-----------------------------------------------------------------------#
 # Absolute path of model directory
-MODEL='/model/run1_rnn.mag'
+MODEL='/model/run2_rnn.mag'
 BUNDLE_FILE="$PARENTDIR$MODEL"
 
 # Create a bundle file
@@ -90,7 +90,7 @@ melody_rnn_generate \
 # melody_rnn_generate \
 # --config="basic_rnn" \
 # --run_dir=/Users/stevenyu0029/Desktop/Musical_Robot/train/checkpoints \
-# --bundle_file=/Users/stevenyu0029/Desktop/Musical_Robot/model/run1.mag \
+# --bundle_file=/Users/stevenyu0029/Desktop/Musical_Robot/model/run2_rnn.mag \
 # --save_generator_bundle
 
 

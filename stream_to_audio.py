@@ -7,10 +7,10 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
-RECORD_SECONDS = 5
+# RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "stream_input.wav"
 
-def stream_to_audio():
+def stream_to_audio(seconds):
 	p = pyaudio.PyAudio()
 
 	stream = p.open(format=FORMAT,
@@ -23,7 +23,7 @@ def stream_to_audio():
 
 	frames = []
 
-	for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+	for i in range(0, int(RATE / CHUNK * seconds)):
 	    data = stream.read(CHUNK)
 	    frames.append(data)
 

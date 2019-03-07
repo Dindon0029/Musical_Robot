@@ -6,7 +6,7 @@ Go to the Musical_Robot folder, and run the following command in terminal: <br /
 ```bash
 >python gui.py
 ```
-How to use GUI? <br />
+**How to use GUI?** <br />
 First, choose an audio source, either from input stream (i.e. microphone) or an existing audio file. <br />
 Second, choose how you would like your melody to be. BPM(beats per min) indicates the tempo of the track. Smoothness indicates the smoothness of your pitch sequence. Min-duration indicates the minimum length of each note.<br />
 Third, choose a pre-trained model from your library. The model should be in .mag format. We have provided some sample model stored in /model directory.<br />

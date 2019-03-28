@@ -30,7 +30,8 @@ melody_rnn_generate \
 --output_dir=${OUTPUT_PATH} \
 --num_outputs=10 \
 --num_steps=128 \
---primer_melody="[60]" \
 --primer_midi=${PRIMER_PATH}
+
+# --primer_melody="[60]" \
 
 

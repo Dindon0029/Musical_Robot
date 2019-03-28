@@ -2,15 +2,15 @@
 Source code of musical robot project. Lead by Professor Steven Kemper at Rutgers University.
 
 ## Convert audio source to pieces of MIDI file
-Go to the Musical_Robot folder, and run the following command in terminal: <br />
+Usage: 
 ```bash
->python gui.py
+>python audio_to_midi.py [-h] mode [--smooth SMOOTH] [--minduration MINDURATION] [--jams] outfile bpm<br />
 ```
-**How to use GUI?** <br />
-First, choose an audio source, either from input stream (i.e. microphone) or an existing audio file. <br />
-Second, choose how you would like your melody to be. BPM(beats per min) indicates the tempo of the track. Smoothness indicates the smoothness of your pitch sequence. Min-duration indicates the minimum length of each note.<br />
-Third, choose a pre-trained model from your library. The model should be in .mag format. We have provided some sample model stored in /model directory.<br />
-Last, click "Generate your melody" to get your own products!
+mode 0 is to use input stream; mode 1 is to use audio file<br />
+For example:
+```bash
+>python audio_to_midi.py 1 --smooth 0.25 --minduration 0.1 --jams ~/song.mid 60<br />
+```
 
 ## Use pretrained neural network model based on Magenta project
 

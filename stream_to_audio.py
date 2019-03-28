@@ -2,13 +2,14 @@
 
 import pyaudio
 import wave
+import os
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
 # RECORD_SECONDS = 5
-WAVE_OUTPUT_FILENAME = "stream_input.wav"
+WAVE_OUTPUT_FILENAME = "./stream_input.wav"
 
 def stream_to_audio(seconds):
 	p = pyaudio.PyAudio()
@@ -33,6 +34,10 @@ def stream_to_audio(seconds):
 	stream.close()
 	p.terminate()
 
+	try:
+		os.remove(WAVE_OUTPUT_FILENAME)
+	except:
+		print "There is no prior music file!"
 	wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
 	wf.setnchannels(CHANNELS)
 	wf.setsampwidth(p.get_sample_size(FORMAT))

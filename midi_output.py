@@ -2,8 +2,10 @@
 from rtmidi import (API_LINUX_ALSA, API_MACOSX_CORE, API_RTMIDI_DUMMY,
                     API_UNIX_JACK, API_WINDOWS_MM, MidiIn, MidiOut,
                     get_compiled_api)
+import mido
 
 def probe_ports():
+    StandardError = None
     try:
         input = raw_input
     except NameError:
@@ -53,4 +55,7 @@ def probe_ports():
 
     return ports
 
-# def send_midi():
+def send_midi(port, filename):
+    mid = mido.MidiFile(filename)
+    for msg in mid.play():
+        port.send(msg)

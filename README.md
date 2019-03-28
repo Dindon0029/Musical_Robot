@@ -1,20 +1,17 @@
 # Musical_Robot
-Source code of musical robot project. Lead by Professor Steven Kemper at Rutgers University.
+Source code of musical robot project. Lead by Professor Steven Kemper at Rutgers University. <br />
+Our research provides a machine learning framework which takes an audio file as primer and produces a meaningful melody as output. The input audio file is first converted into MIDI format, and then passes through a pre-trained recurrent neural network model. The model incorporates input audio and produces an output MIDI file. Finally, the MIDI file is transmitted and played either by MIDI software or MIDI instruments. In our research, a self-made Vibration Motor Actuated robotic string instrument stands as an output instrument. However, the program itself is stand-alone, thus can be generally used for any output sources. <br />
 
-## Convert audio source to pieces of MIDI file
+## Run the program using pre-trained model
+We create a Graphical User Interface for easy use <br />
+
 Usage: 
 ```bash
->python audio_to_midi.py [-h] mode [--smooth SMOOTH] [--minduration MINDURATION] [--jams] outfile bpm<br />
+>python gui.py
 ```
-mode 0 is to use input stream; mode 1 is to use audio file<br />
-For example:
-```bash
->python audio_to_midi.py 1 --smooth 0.25 --minduration 0.1 --jams ~/song.mid 60<br />
-```
-
-## Use pretrained neural network model based on Magenta project
 
 ## Train your own model
+The construction of neural network is built on Google Magenta project (https://github.com/tensorflow/magenta)
 
 # Dependencies
 - Requires python 2.7 (will most likely crash on python 3, untested)<br />
@@ -25,3 +22,7 @@ For example:
 - NumPy & SciPy: http://www.scipy.org/<br />
 - JAMS: https://github.com/marl/jams<br />
 - Pyaudio: https://people.csail.mit.edu/hubert/pyaudio/<br />
+- Pygame: 
+- Mido:
+- Py-midi:
+- Rtmidi:

@@ -9,6 +9,7 @@ import audio_to_midi_melodia as atmm
 import midi_output
 import os
 import subprocess
+import platform
 import shutil
 from pygame import midi as pm
 
@@ -18,13 +19,14 @@ class GUI:
 		self.infile = ""    # path for input wav/mp3
 		self.outfile = os.path.dirname(os.path.abspath(__file__))+'/primer/primer.mid'   # path for output MIDI
 		self.model = ""   # path for pre-trained model
+		self.midi = ""	# path for generated midi file
+		self.seconds = 0    # time length for recording
+		self.playable = False   # flag for whether to play the generated MIDI files
+		# parameters that would make impacts on the step of 'converting audio to MIDI'
 		self.bpm = StringVar()       # beats per minute
 		self.smooth = StringVar()  # smooth the pitch sequence with a median filter of the provided duration (in seconds)
 		self.mindura = StringVar()  # minimum allowed duration for notes
-		self.seconds = 0    # time length for recording
-
-		self.playable = False   # flag for whether to play the generated MIDI files
-
+		
 		self.master = master
 		master.title("Musical Robot GUI")
 
@@ -33,7 +35,7 @@ class GUI:
 		self.record_text = Label(master, text="Record your voice here! Please type in seconds: ")
 		self.or_text = Label(master, text="OR", font='Helvetica 12 bold')
 		self.input_browse_text = Label(master, text="Open an audio file from local: ")
-		self.config_text = Label(master, text="How would you like your melody?", font='Helvetica 16 bold')
+		self.config_text = Label(master, text="You can change your recorded audio file. That would affect your generated melody!", font='Helvetica 16 bold')
 		self.checkmark1 = Label(master, text=u'\u2713', fg='green')
 		self.checkmark2 = Label(master, text=u'\u2713', fg='green')
 		## self.saving_text = Label(master, text="Saving path: ")
@@ -46,6 +48,7 @@ class GUI:
 		self.record_button = Button(master, text="Record", command=lambda: self.record(self.seconds))
 		self.browse_music_button = Button(master, text="Browse...", command=lambda: self.browse("music"))
 		self.browse_model_button = Button(master, text="Browse...", command=lambda: self.browse("model"))
+		self.browse_midi_button = Button(master, text="Choose a generated MIDI file", command=lambda: self.browse("midi"))
 		self.generate_button = Button(master, text="Generate your own melody", command=lambda: self.generate())
 		self.play_button = Button(master, text=u'\u25B6', fg='green', command=lambda: self.play())
 		self.quit_button = Button(master, text="Quit", command=lambda: self.quit())
@@ -107,12 +110,14 @@ class GUI:
 		self.checkmark2.grid_remove()
 		
 		self.generate_button.grid(row = 10)
-		self.play_button.grid(row = 10, column = 1)
+		self.browse_midi_button.grid(row = 10, column = 1)
+		self.browse_midi_button.grid_remove()
+		self.play_button.grid(row = 10, column = 2)
 		self.play_button.grid_remove()
-		self.quit_button.grid(row = 10, column = 2)
+		self.quit_button.grid(row = 11, column = 1)
 
 		root.grid_rowconfigure(9, minsize=30) 
-		root.grid_rowconfigure(11, minsize=30) 
+		root.grid_rowconfigure(12, minsize=30) 
 
 
 	def validate(self, new_text):
@@ -164,14 +169,6 @@ class GUI:
 				except:                     
 					showerror("Open Source File", "Failed to read file\n'%s'" % fname)
 				return
-		# elif sort == "saving"
-		#     fname = askdirectory()
-		#     if fname:
-		#         try:
-		#             self.outfile = fname+'/primer.mid'
-		#         except:                     
-		#             showerror("Open Source Directory", "Failed to read directory\n'%s'" % fname)
-		#         return
 		elif sort == "model":
 			fname = askopenfilename(filetypes=(("Model files", "*.mag"),))
 			if fname:
@@ -179,6 +176,15 @@ class GUI:
 					self.model = fname
 					print self.model
 					self.checkmark2.grid(row = 8, column = 2)
+				except:                    
+					showerror("Open Source File", "Failed to read file\n'%s'" % fname)
+				return
+		elif sort == "midi":
+			fname = askopenfilename(filetypes=(("MIDI files", "*.mid"),))
+			if fname:
+				try:
+					self.midi = fname
+					print self.midi
 				except:                    
 					showerror("Open Source File", "Failed to read file\n'%s'" % fname)
 				return
@@ -204,7 +210,9 @@ class GUI:
 			self.playable = True  
 			folder = os.path.dirname(os.path.abspath(__file__))+'/output'   # default folder to store all generated MIDI files
 			showinfo("Info", "Your melodies have been successfully generated and saved in '%s'." % folder)
-			self.play_button.grid(row = 10, column = 1)
+			# show 'play' buttons
+			self.browse_midi_button.grid(row = 10, column = 1)
+			self.play_button.grid(row = 10, column = 2)		
 		except:
 			showerror("Error", "Failed to execute generate.sh")
 		return
@@ -224,9 +232,23 @@ class GUI:
 	def play(self):
 		ports = midi_output.probe_ports()
 		if ports == []:	# no ports found
-			showerror("Error", "There is no available port detected!")
-		else:
-			print ""
+			answer = messagebox.askyesno("Warning","There is no output port available. Would you like to open MIDI file with default application?")
+			if answer == True:	
+				filepath = self.midi
+				if platform.system() == 'Darwin':       # macOS
+					subprocess.call(('open', filepath))
+				elif platform.system() == 'Windows':    # Windows
+					os.startfile(filepath)
+				else:                                   # linux variants
+					subprocess.call(('xdg-open', filepath))
+			else:
+				return
+		else:	# ports found
+			port = ports[0]
+			try:
+				midi_output.send_midi(port, self.midi)	# parsing MIDI events to the port
+			except:
+				showerror("Error", "Failed to process the MIDI file!")
 		return 
 
 	def quit(self):

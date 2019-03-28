@@ -56,6 +56,8 @@ def probe_ports():
     return ports
 
 def send_midi(port, filename):
+    print filename
+    portu = mido.open_output(port)
     mid = mido.MidiFile(filename)
     for msg in mid.play():
-        port.send(msg)
+        portu.send(msg)

@@ -192,7 +192,7 @@ class GUI:
 	# generate melody according to the information
 	def generate(self):
 		if not self.infile:
-			showerror("Error", "Please choose the audio source first, either by recording or feeding in an audio file.")
+			showerror("Error", "Please choose the audio source first, either recording or feeding in an audio file.")
 			return
 		if not self.model:
 			showerror("Error", "Please provide model address.")
@@ -245,6 +245,7 @@ class GUI:
 				return
 		else:	# ports found
 			port = ports[0]
+			# port = 0
 			try:
 				midi_output.send_midi(port, self.midi)	# parsing MIDI events to the port
 			except:

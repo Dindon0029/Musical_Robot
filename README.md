@@ -22,7 +22,7 @@ The construction of neural network is built on Google Magenta project (https://g
 - NumPy & SciPy: http://www.scipy.org/<br />
 - JAMS: https://github.com/marl/jams<br />
 - Pyaudio: https://people.csail.mit.edu/hubert/pyaudio/<br />
-- Pygame: 
-- Mido:
-- Py-midi:
-- Rtmidi:
+- Pygame: https://www.pygame.org/news/<br />
+- Mido: https://mido.readthedocs.io/en/latest/<br />
+- Py-midi: https://pypi.org/project/pymidi/<br />
+- Rtmidi: https://pypi.org/project/python-rtmidi/<br />

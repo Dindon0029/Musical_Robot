@@ -1,3 +1,6 @@
+# Musical Robot Project led by Professor Steven Kemper
+# Author: Zetao Yu
+
 # Support converting any audio source into MIDI
 
 import audio_to_midi_melodia as atmm

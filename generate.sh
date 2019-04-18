@@ -1,3 +1,6 @@
+# Musical Robot Project led by Professor Steven Kemper
+# Author: Zetao Yu
+
 #!/bin/sh  
 #generate.bash
 # shell script used to use pretrained model, to use primer.mid as primer, and generate new midi file as response

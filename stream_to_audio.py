@@ -1,4 +1,7 @@
-"""Record a few seconds of audio and save to a WAVE file."""
+# Musical Robot Project led by Professor Steven Kemper
+# Author: Zetao Yu
+
+# Record a few seconds of audio and save to a WAVE file.
 
 import pyaudio
 import wave

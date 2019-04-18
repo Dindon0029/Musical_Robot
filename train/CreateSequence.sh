@@ -1,5 +1,9 @@
+# Musical Robot Project led by Professor Steven Kemper
+# Author: Zetao Yu
+
 #!/bin/sh  
 #CreateSequence.bash
+# shell script to go through training model process
 
 #-----------------------------------------------------------------------#
 

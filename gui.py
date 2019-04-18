@@ -1,3 +1,8 @@
+# Musical Robot Project led by Professor Steven Kemper
+# Author: Zetao Yu
+
+# Build a GUI to present the workflow
+
 from tkinter import Tk, Label, Button, Entry, IntVar, DoubleVar, StringVar, END, W, E, N, S, ttk, messagebox
 from tkinter.filedialog import askopenfilename
 # from sqlalchemy.sql.expression import column
@@ -13,22 +18,41 @@ import platform
 import shutil
 from pygame import midi as pm
 
+ports = []
+ports_options = []
+
+def detect_port():
+	global ports, ports_options
+	ports = midi_output.probe_ports()
+	if ports == []:	# no ports found
+		ports_options = ["default"]	# users can only use default app to open MIDI files
+	else:	# ports found
+		ports_options = ports
+		ports_options.append("default")
+		print ports_options
+	return 
+
 class GUI:
 
 	def __init__(self, master):
+		global ports, ports_options
+		# declare varibles
 		self.infile = ""    # path for input wav/mp3
 		self.outfile = os.path.dirname(os.path.abspath(__file__))+'/primer/primer.mid'   # path for output MIDI
 		self.model = ""   # path for pre-trained model
 		self.midi = ""	# path for generated midi file
 		self.seconds = 0    # time length for recording
 		self.playable = False   # flag for whether to play the generated MIDI files
-		# parameters that would make impacts on the step of 'converting audio to MIDI'
+		# declare parameters which can be chosen by users
 		self.bpm = StringVar()       # beats per minute
 		self.smooth = StringVar()  # smooth the pitch sequence with a median filter of the provided duration (in seconds)
 		self.mindura = StringVar()  # minimum allowed duration for notes
-		
+		self.port = StringVar()	# port for output
+
 		self.master = master
 		master.title("Musical Robot GUI")
+		# detect ports
+		detect_port()
 
 		# text definitions
 		self.label = Label(master, text="Musical Robot GUI", font='Helvetica 18 bold')
@@ -73,12 +97,15 @@ class GUI:
 		self.smooth_combo.current(0)
 		self.mindura_combo = ttk.Combobox(master, textvariable=self.mindura, state="readonly",   # minduration combo box
 							values=[
-									"0.1(default)",
-									"0.2",
-									"0.3",
-									"0.4",
-									"2"])
+									"0.1(default)"])
+									# "0.2",
+									# "0.3",
+									# "0.4",
+									# "2"
 		self.mindura_combo.current(0)
+		self.ports_combo = ttk.Combobox(master, textvariable=self.port, state="readonly",   # ports combo box
+							values=ports_options)
+		self.ports_combo.current(0)
 
 		# Layouts
 		self.label.grid(columnspan=3, sticky=N)
@@ -112,7 +139,8 @@ class GUI:
 		self.generate_button.grid(row = 10)
 		self.browse_midi_button.grid(row = 10, column = 1)
 		self.browse_midi_button.grid_remove()
-		self.play_button.grid(row = 10, column = 2)
+		self.ports_combo.grid(row = 10, column = 2)
+		self.play_button.grid(row = 10, column = 3)
 		self.play_button.grid_remove()
 		self.quit_button.grid(row = 11, column = 1)
 
@@ -212,7 +240,7 @@ class GUI:
 			showinfo("Info", "Your melodies have been successfully generated and saved in '%s'." % folder)
 			# show 'play' buttons
 			self.browse_midi_button.grid(row = 10, column = 1)
-			self.play_button.grid(row = 10, column = 2)		
+			self.play_button.grid(row = 10, column = 3)		
 		except:
 			showerror("Error", "Failed to execute generate.sh")
 		return
@@ -230,23 +258,19 @@ class GUI:
 		return ret # return the first float number
 
 	def play(self):
-		ports = midi_output.probe_ports()
-		if ports == []:	# no ports found
-			answer = messagebox.askyesno("Warning","There is no output port available. Would you like to open MIDI file with default application?")
-			if answer == True:	
-				filepath = self.midi
-				if platform.system() == 'Darwin':       # macOS
-					subprocess.call(('open', filepath))
-				elif platform.system() == 'Windows':    # Windows
-					os.startfile(filepath)
-				else:                                   # linux variants
-					subprocess.call(('xdg-open', filepath))
-			else:
-				return
-		else:	# ports found
-			port = ports[0]
-			# port = 0
+		global ports, ports_options
+		port = self.port.get()
+		if port == "default":	# no ports found, use default application to open
+			filepath = self.midi
+			if platform.system() == 'Darwin':       # macOS
+				subprocess.call(('open', filepath))
+			elif platform.system() == 'Windows':    # Windows
+				os.startfile(filepath)
+			else:                                   # linux variants
+				subprocess.call(('xdg-open', filepath))
+		else:
 			try:
+				print port
 				midi_output.send_midi(port, self.midi)	# parsing MIDI events to the port
 			except:
 				showerror("Error", "Failed to process the MIDI file!")

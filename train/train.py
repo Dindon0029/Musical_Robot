@@ -1,3 +1,8 @@
+# Musical Robot Project led by Professor Steven Kemper
+# Author: Zetao Yu
+
+# Train the model
+
 import subprocess
 
 # Generate NoteSequence Buffer, NoteSequence Examples and train the model

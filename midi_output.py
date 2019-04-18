@@ -1,3 +1,7 @@
+# Musical Robot Project led by Professor Steven Kemper
+# Author: Zetao Yu
+
+# Detect ports and send MIDI messages through ports
 
 from rtmidi import (API_LINUX_ALSA, API_MACOSX_CORE, API_RTMIDI_DUMMY,
                     API_UNIX_JACK, API_WINDOWS_MM, MidiIn, MidiOut,
